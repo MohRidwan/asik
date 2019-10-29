@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<title>Form Validation | Melon - Flat &amp; Responsive Admin Template</title>
+
+	<!--=== CSS ===-->
+
+	<!-- Bootstrap -->
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+	<!-- jQuery UI -->
+	<!--<link href="plugins/jquery-ui/jquery-ui-1.10.2.custom.css" rel="stylesheet" type="text/css" />-->
+	<!--[if lt IE 9]>
+		<link rel="stylesheet" type="text/css" href="plugins/jquery-ui/jquery.ui.1.10.2.ie.css"/>
+	<![endif]-->
+
+	<!-- Theme -->
+	<link href="assets/css/main.css" rel="stylesheet" type="text/css" />
+	<link href="assets/css/plugins.css" rel="stylesheet" type="text/css" />
+	<link href="assets/css/responsive.css" rel="stylesheet" type="text/css" />
+	<link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
+
+	<link rel="stylesheet" href="assets/css/fontawesome/font-awesome.min.css">
+    <style type="text/css">
+	.form-group{
+		margin-bottom:2px;
+		}
+    </style>
+
+	<!--[if IE 7]>
+		<link rel="stylesheet" href="assets/css/fontawesome/font-awesome-ie7.min.css">
+	<![endif]-->
+
+	<!--[if IE 8]>
+		<link href="assets/css/ie8.css" rel="stylesheet" type="text/css" />
+	<![endif]
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+	-->
+	<!--=== JavaScript ===-->
+
+	<script type="text/javascript" src="assets/js/libs/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
+
+	<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="assets/js/libs/lodash.compat.min.js"></script>
+
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+		<script src="assets/js/libs/html5shiv.js"></script>
+	<![endif]-->
+
+	<!-- Smartphone Touch Events -->
+	<script type="text/javascript" src="plugins/touchpunch/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="plugins/event.swipe/jquery.event.move.js"></script>
+	<script type="text/javascript" src="plugins/event.swipe/jquery.event.swipe.js"></script>
+
+	<!-- General -->
+	<script type="text/javascript" src="assets/js/libs/breakpoints.js"></script>
+	<script type="text/javascript" src="plugins/respond/respond.min.js"></script>
+	<script type="text/javascript" src="plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script type="text/javascript" src="plugins/slimscroll/jquery.slimscroll.horizontal.min.js"></script>
+
+	<!-- Page specific plugins -->
+	<!--Date Range Picker-->
+	<script type="text/javascript" src="plugins/daterangepicker/moment.min.js"></script>
+	<script type="text/javascript" src="plugins/daterangepicker/daterangepicker.js"></script>
+
+	<!-- Forms -->
+    <script type="text/javascript" src="plugins/tagsinput/jquery.tagsinput.min.js"></script>
+    <script type="text/javascript" src="plugins/autosize/jquery.autosize.min.js"></script>
+    
+	<!-- Form Validation -->
+	<script type="text/javascript" src="plugins/validation/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="plugins/validation/additional-methods.min.js"></script>
+
+	<!-- Noty -->
+	<script type="text/javascript" src="plugins/noty/jquery.noty.js"></script>
+	<script type="text/javascript" src="plugins/noty/layouts/top.js"></script>
+	<script type="text/javascript" src="plugins/noty/themes/default.js"></script>
+
+	<!-- App -->
+	<script type="text/javascript" src="assets/js/app.js"></script>
+	<script type="text/javascript" src="assets/js/plugins.js"></script>
+	<script type="text/javascript" src="assets/js/plugins.form-components.js"></script>
+    
+    <!-- Bootbox -->
+	<script type="text/javascript" src="plugins/bootbox/bootbox.js"></script>
+
+	<script>
+	$(document).ready(function(){
+		"use strict";
+
+		App.init(); // Init layout and core plugins
+		Plugins.init(); // Init all plugins
+		FormComponents.init(); // Init all form-specific plugins
+		
+		//body loading halaman
+		$(window).load(function(){
+		   $('#loading-overlay').fadeOut('fast');
+		   $('#loading').fadeOut('fast');
+		});
+		//body loading halaman
+		
+		<!--header waktu-->
+		$('.waktu').flipcountdown({
+			size:"xs"
+		});
+		<!--header waktu-->
+		
+		<!--header tanggal -->
+		var months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+		var myDays = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jum&#39;at', 'Sabtu'];
+		var date = new Date();
+		var day = date.getDate();
+		var month = date.getMonth();
+		var thisDay = date.getDay(),
+			thisDay = myDays[thisDay];
+		var yy = date.getYear();
+		var year = (yy < 1000) ? yy + 1900 : yy;
+		$('.tanggal').html(thisDay + ', ' + day + ' ' + months[month] + ' ' + year);
+		$('.tgl_antrian_pasien').val(day +'-'+ (month+1) +'-'+ year);
+		<!--header tanggal-->
+		
+		//menu current
+		$('#nav li').click(function() {
+		   $('#nav li').removeClass('current');
+		   $(this).addClass('current')
+		});
+		//menu current
+		
+		//content form clear
+		function clearform($form) {
+		  $form.find('input:text, input:password, input:file, select, textarea').val('');
+		  $form.find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
+		  $form.add('.form-group').find('label[generated="true"]').html('');
+		  $form.add('.form-group').removeClass('has-error has-success');
+		}
+		clearform($('.form-horizontal'));
+		//clear form clear
+				
+		//content form tgl lahir
+		$("input[name='tanggal_lahir']").datepicker({	
+			yearRange: '-100:+0',
+			changeYear: true,
+			changeMonth: true,
+			showOtherMonths:true,
+			autoSize: true,
+			dateFormat: 'dd-mm-yy',
+			maxDate: 0,
+			onSelect: function(value, ui) {
+				var now = new Date();
+				var yearNow = now.getFullYear();
+				var monthNow = now.getMonth()+1;
+				var dateNow = now.getDate();
+				console.log(yearNow+' '+monthNow+' '+dateNow);
+				
+				var yearDob = ui.selectedYear;
+				var monthDob = ui.selectedMonth+1;
+				var dateDob = ui.selectedDay;
+				console.log(yearDob+' '+monthDob+' '+dateDob);
+				
+				var yearAge = yearNow - yearDob;
+
+				if (monthNow >= monthDob)
+					var monthAge = monthNow - monthDob;
+				else {
+					yearAge--;
+					var monthAge = 12 + monthNow -monthDob;
+				}
+				
+				if (dateNow >= dateDob)
+					var dateAge = dateNow - dateDob;
+				else {
+					monthAge--;
+					var dateAge = 31 + dateNow - dateDob;
+						if (monthAge < 0) {
+							monthAge = 11;
+							yearAge--;
+						}
+				}
+				console.log(yearAge+' '+monthAge+' '+dateAge);
+				
+				$("input[name='umur_tahun']").val(yearAge).valid();
+				$("input[name='umur_bulan']").val(monthAge).valid();
+				$("input[name='tanggal_lahir']").valid();
+				
+				if((yearAge < 17) || (yearAge > 75))
+					{
+						$('.pj').show('slow');
+						$('.ck').removeClass('col-md-12').addClass('col-md-5');
+						$("[name='catatan_khusus']").attr('rows','10');
+					} 
+				else 
+					{
+						$('.pj').hide('slow');
+						$('.ck').removeClass('col-md-5').addClass('col-md-12');
+						$("[name='catatan_khusus']").attr('rows','2');
+						clearform($('.pj'));
+					}
+				$("[name='jenis_kelamin']").focus();				
+				
+			}
+		});
+		//content form tgl lahir
+		
+		//content form checkbox_alamat_pj
+		$("input[name='checkbox_alamat_pj']").click(function(){
+			if ($(this).is(':checked')){ //jika di centang
+				if ($("[name='alamat']").valid() == true ){ //jika validasi true
+			    	var alamat = $("[name='alamat']").val();
+			    	$("[name='alamat_pj']").val(alamat); //alamat pasien = alamat penanggung jawab
+			    }else{
+				    $(this).prop('checked', false); //unchecked
+					$("[name='alamat']").focus();
+			    }
+				$("[name='alamat_pj']").valid();				
+			}else{
+				$("[name='alamat_pj']").val('').valid();
+			}
+		});
+		//content form checkbox_alamat_pj
+		
+		//content form checkbox_no_kontak_pj 
+		$("input[name='checkbox_no_kontak_pj']").click(function(){
+			if ($(this).is(':checked')){ //jika di centang
+				if ($("[name='no_tlp']").valid() == true && $("[name='no_ponsel']").valid()){ //jika validasi true
+			    	var tlp = $("[name='no_tlp']").val();
+					var ponsel = $("[name='no_ponsel']").val();
+			    	$("[name='no_tlp_pj']").val(tlp);
+					$("[name='no_ponsel_pj']").val(ponsel);
+			    }else{
+				    $(this).prop('checked', false); //unchecked
+					$("[name='no_tlp']").focus();
+			    }
+				$("[name='no_tlp_pj']").valid();
+				$("[name='no_ponsel_pj']").valid();				
+			}else{
+				$("[name='no_tlp_pj']").val('').valid();
+				$("[name='no_ponsel_pj']").val('').valid();
+			}
+		});
+		//content form checkbox_no_kontak_pj
+		
+		$.validator.setDefaults({
+				submitHandler: function(form) {
+				var data = $(form).serialize();
+				alert(data);
+				console.log(data);
+				}
+		});
+		
+		$('.content2').slimScroll({
+			height:'80vh',
+			alwaysVisible: false
+		});
+		
+		$('.fa-edit').click(function(){
+			alert('edit');
+			});
+	});
+	</script>
+
+	<!-- Demo JS -->
+	<script type="text/javascript" src="assets/js/demo/form_validation.js"></script>
+    
+    <!--waktu-->
+    <script type="text/javascript" src="plugins/flipcountdown/jquery.flipcountdown.js"></script>
+    <link rel="stylesheet" type="text/css" href="plugins/flipcountdown/jquery.flipcountdown.css" />
+</head>
+
+<body>
+	<div id="loading-overlay"></div>
+    <div id="loading">
+    	<span>LOADING</span>
+    </div>
+	<!-- Header -->
+	<header class="header navbar navbar-fixed-top" role="banner">
+		<!-- Top Navigation Bar -->
+		<div class="container">
+
+			<!-- Only visible on smartphones, menu toggle -->
+			<ul class="nav navbar-nav">
+				<li class="nav-toggle"><a href="javascript:void(0);" title=""><i class="fa fa-reorder"></i></a></li>
+			</ul>
+
+			<!-- Logo -->
+			<a class="navbar-brand" href="#">
+				<img src="assets/img/logo-kp-70px.png" alt="logo" />
+			</a>
+			<!-- /logo -->
+            
+            <a href="#" class="toggle-sidebar2">
+            	<span style="font-size:20px;"><strong>Klinik Padjadjaran Jatinangor</strong></span>
+            	<span style="font-size:12px;">Jl. Kolonel Achmad Syam RT.04/02 Ds. Sayang Kec. Jatinangor Kab. Sumedang</span>
+            	<span style="font-size:12px;">Tlp. +62-22-7781900</span>
+			</a>         
+
+			<!-- /Sidebar Toggler -->
+            <a href="#" class="toggle-sidebar4">
+            <span class="waktu"></span>
+            <span class="tanggal" style="font-size:11px;"></span>
+			</a>     
+
+			<!-- Top Right Menu -->
+			<ul class="nav navbar-nav navbar-right">
+                <a href="#" class="toggle-sidebar3">
+                    <span style="font-size:16px;"><strong>dr. Reagan Vincent Pantouw</strong></span>
+                    <span style="font-size:13px;"><strong>PENDAFTARAN</strong></span>
+                    <span style="font-size:13px;"><strong>PAGI</strong></span>
+                </a>
+				<!-- User Login Dropdown -->
+				<li class="dropdown user">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<img alt="" class="img-circle" src="assets/img/foto/a.jpeg" width="48px" />
+                        <span class="badge">7</span>
+						<!--<i class="fa fa-caret-down" aria-hidden="true"></i>-->
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="pages_user_profile.html"><i class="fa fa-weixin" aria-hidden="true"></i> Chat</a></li>
+						<li><a href="pages_user_profile.html"><i class="fa fa-info-circle" aria-hidden="true"></i> My Profile</a></li>
+						<li class="divider"></li>
+						<li><a href="<?php echo base_url() ?>/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign Out</a></li>
+					</ul>
+				</li>
+				<!-- /user login dropdown -->
+			</ul>
+			<!-- /Top Right Menu -->
+		</div>
+		<!-- /top navigation bar -->
+	</header> <!-- /.header -->
+
+	<div id="container">
+		<div id="sidebar" class="sidebar-fixed"><!-- /Sidebar -->
+			<div id="sidebar-content">				              
+				<ul id="nav"><!--=== Navigation ===-->  
+                	<li>
+						<a href="javascript:void(0);">
+							<i style="padding:3px 0 3px 0;"></i>
+						</a>
+					</li>
+					<li>
+						<a href="javascript:void(0);" class="bs-tooltip" data-placement="right" data-original-title="Home">
+							<i class="fa fa-home fa-2x" style="padding:3px 0 3px 0;"></i>
+						</a>
+					</li>
+                    <li>
+						<a href="javascript:void(0);" class="bs-tooltip" data-placement="right" data-original-title="Cari Pasien">
+							<i class="fa fa-search fa-2x" style="padding:3px 0 3px 0;"></i>
+						</a>
+					</li>
+                     <li  class="current">
+						<a href="javascript:void(0);" class="bs-tooltip" data-placement="right" data-original-title="Input Data Pasien">
+							<i class="fa fa-user-plus fa-2x" style="padding:3px 0 3px 0;"></i>
+						</a>
+					</li>
+                     <li>
+						<a href="javascript:void(0);" class="bs-tooltip" data-placement="right" data-original-title="Pendaftaran Poliklinik">                        
+							<i class="fa fa-list-alt fa-2x" style="padding:3px 0 3px 0;"></i>                             
+						</a>
+					</li>
+                    <li>
+						<a href="javascript:void(0);" class="bs-tooltip" data-placement="right" data-original-title="Pendaftaran Laboratorium">
+							<i class="fa fa-flask fa-2x" style="padding:3px 0 3px 0;"></i>
+						</a>
+					</li>
+                    <li>
+						<a href="javascript:void(0);" class="bs-tooltip" data-placement="right" data-original-title="Pendaftaran Radiologi">
+							<i class="fa fa-universal-access fa-2x" style="padding:3px 0 3px 0;"></i>
+						</a>
+					</li>    
+                    <li>
+						<a href="javascript:void(0);">
+							<i style="padding:3px 0 3px 0;"></i>
+						</a>
+					</li>     
+                    <li>
+						<a href="javascript:void(0);" class="bs-tooltip" data-placement="right" data-original-title="Cek Obat">
+							<i class="fa fa-medkit fa-2x" style="padding:3px 0 3px 0;"></i>
+						</a>
+					</li>     
+                    <li>
+						<a href="javascript:void(0);" class="bs-tooltip" data-placement="right" data-original-title="Cek Tarif">
+							<i class="fa fa-money fa-2x" style="padding:3px 0 3px 0;"></i>
+						</a>
+					</li>                   
+				</ul><!-- /Navigation -->				
+			</div>
+		</div><!-- /Sidebar -->
+		
+        
+        <div id="content"><!--content-->
+            <div class="container">
+            	<div class="row">
+                	<div class="col-md-8 col-sm-8 col-xs-8 col-lg-8" style="padding:5px;">
+                    	<div class="widget box" style="margin-bottom:0px;">
+							<div class="widget-header">
+                                <h4><i class="fa fa-user-plus"></i> INPUT DATA PASIEN</h4>                             
+                            </div>
+							<div class="widget-content">
+                            <form method="post" id="validate-1" class="form-horizontal">                               
+								<div class="row">
+                                	<div class="col-md-7">
+                                        <h5><strong>Informasi Umum</strong></h5> 
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                 <div class="form-group">
+                                                    <label class="col-md-12 control-label">Nama Pasien :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3" style="padding:0 1px 0 1px;">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <input type="text" name="nama_depan" placeholder="Nama Depan" class="form-control required input-sm">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4" style="padding:0 1px 0 1px;">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <input type="text" name="nama_belakang" placeholder="Nama Belakang" class="form-control input-sm">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2" style="padding:0 1px 0 1px;">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <select name="sapaan" class="form-control align-center required select-sm" >
+                                                            <option value=""></option>
+                                                            <option value="by">By</option>
+                                                            <option value="an">An</option>
+                                                            <option value="tn">Tn</option>
+                                                            <option value="nn">Nn</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">NIK :</label>
+                                            <div class="col-md-7" style="padding:0 1px 0 1px;">
+                                                <input type="text" name="nik" class="form-control required digits input-sm" maxlength="16">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                        	<div class="col-md-3">
+                                            	<div class="form-group">
+                                                    <label class="col-md-12 control-label">Tempat/Tgl.Lahir:</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4" style="padding:0 1px 0 1px;">
+                                            	<div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <input type="text" name="tempat_lahir" placeholder="Tempat Lahir" class="form-control required input-sm">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1 align-center" style="padding:4px 1px 0 1px;">
+                                            	/
+                                            </div>
+                                            <div class="col-md-4" style="padding:0 1px 0 1px;">
+                                            	<div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <input type="text" name="tanggal_lahir" placeholder="dd-mm-yyyy" class="form-control required input-sm align-center" style="background-color:white;" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                        	<div class="col-md-3">
+                                            	<div class="form-group">
+                                                    <label class="col-md-12 control-label">Umur :</label>
+                                                </div>	
+                                            </div>
+                                            <div class="col-md-2" style="padding:0 1px 0 1px;">
+                                            	<div class="form-group">
+                                                    <div class="col-md-6" style="padding-right:1px;">
+                                                        <input type="text" name="umur_tahun" placeholder="0" class="form-control required input-sm align-center" style="background-color:white;" readonly>
+                                                    </div>
+                                                    <div class="col-md-6" style="padding-left:1px;padding-top:4px;">
+                                                    	Tahun
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2" style="padding:0 1px 0 1px;">
+                                            	<div class="form-group">
+                                                    <div class="col-md-6" style="padding-right:1px;">
+                                                        <input type="text" name="umur_bulan" placeholder="0" class="form-control required align-center input-sm" style="background-color:white;" readonly>
+                                                    </div>
+                                                    <div class="col-md-6" style="padding-left:1px;padding-top:4px;">
+                                                    	Bulan
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Jenis Kelamin :</label>
+                                            <div class="col-md-4" style="padding:0 1px 0 1px;">
+                                                <select name="jenis_kelamin" class="form-control align-center required select-sm" >
+                                                    <option value=""></option>
+                                                    <option value="1">Laki-laki</option>
+                                                    <option value="2">Perempuan</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Alamat :</label>
+                                            <div class="col-md-9" style="padding:0 1px 0 1px;">
+                                            	<textarea rows="3" cols="5" name="alamat" class="auto form-control required input-sm"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                        	<div class="col-md-3">
+                                            	<div class="form-group">
+                                                    <label class="col-md-12 control-label">Agama/Suku :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4" style="padding:0 1px 0 1px;">
+                                            	<div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <input type="text" name="agama" placeholder="Agama" class="form-control required input-sm">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1 align-center" style="padding:4px 1px 0px 1px">
+                                            /
+                                            </div>
+                                            <div class="col-md-4" style="padding:0 1px 0 1px;">
+                                            	<div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <input type="text" name="suku" placeholder="Suku" class="form-control required input-sm">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Pekerjaan :</label>
+                                            <div class="col-md-4" style="padding:0 1px 0 1px;">
+                                                <input type="text" name="pekerjaan" class="form-control required input-sm">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                        	<div class="col-md-3">
+                                            	<div class="form-group">
+                                                    <label class="col-md-12 control-label">No. Kontak :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4" style="padding:0 1px 0 1px;">
+                                            	<div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <input type="text" name="no_tlp" placeholder="Nomor Telepon" class="form-control required digits input-sm" maxlength="8">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1 align-center" style="padding:4px 1px 0 1px">
+                                            /
+                                            </div>
+                                            <div class="col-md-4" style="padding:0 1px 0 1px;">
+                                            	<div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <input type="text" name="no_ponsel" placeholder="Nomor Ponsel" class="form-control required digits input-sm" maxlength="13">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                         <div class="form-group">
+                                            <label class="col-md-3 control-label">Email :</label>
+                                            <div class="col-md-9" style="padding:0 1px 0 1px;">
+                                                <input type="text" name="email" class="form-control required email input-sm">
+                                            </div>
+                                        </div>                                        
+                                    </div>
+                                    <div class="col-md-5">
+                                    	<h5><strong>Informasi Kesehatan</strong></h5>
+                                        <div class="row">
+                                        	<div class="col-md-5">
+                                            	<div class="form-group">
+                                                    <label class="col-md-12" style="padding-top:7px;">Golongan Darah :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2" style="padding:0 1px 0 1px;">
+                                            	<div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <select name="golongan_darah" class="form-control align-center required select-sm" >
+                                                            <option value=""></option>
+                                                            <option value="A" >A</option>
+                                                            <option value="AB">AB</option>
+                                                            <option value="B">B</option>
+                                                            <option value="O">O</option>
+                                                            <option value="tidak tahu">Tidak Tahu</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>                                            
+                                            <div class="col-md-2" style="padding:0 1px 0 1px;">
+                                            	<div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <select name="rhesus" class="form-control align-center required select-sm" >
+                                                            <option value=""></option>
+                                                            <option value="+">+</option>
+                                                            <option value="-">-</option>
+                                                            <option value="tidak tahu">Tidak Tahu</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" >
+                                        	<label class="col-md-5" style="padding-top:7px;">Riwayat Alergi :</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control input-sm" style="visibility:hidden;">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12" >
+                                                <input type="text" name="alergi" class="form-control tags input-sm">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                        	<label class="col-md-7" style="padding-top:7px;">Riwayat Penyakit Dahulu :</label>
+                                            <div class="col-md-5">
+                                                <input type="text" class="form-control input-sm" style="visibility:hidden;">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <input type="text" name="penyakit" class="form-control tags input-sm">
+                                            </div>
+                                        </div>
+                                         <div class="form-group">
+                                        	<label class="col-md-5" style="padding-top:7px;">Riwayat Operasi :</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control input-sm" style="visibility:hidden;">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <input type="text" name="operasi" class="form-control tags input-sm">
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                	<div class="col-md-7 pj" style="display:none;">
+                                    	<h5><strong>Penanggung Jawab Pasien (PJ Pasien)</strong></h5>                                        
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                     <div class="form-group">
+                                                        <label class="col-md-12 control-label">Nama PJ :</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <input type="text" name="nama_pj_depan" placeholder="Nama Depan" class="form-control required input-sm">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <input type="text" name="nama_pj_belakang" placeholder="Nama Belakang" class="form-control input-sm">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <select name="sapaan_pj" class="form-control align-center required select-sm" >
+                                                                <option value=""></option>
+                                                                <option value="an">An</option>
+                                                                <option value="tn">Tn</option>
+                                                                <option value="nn">Nn</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label">NIK PJ Pasien :</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" name="nik_pj" class="form-control required digits input-sm" maxlength="16">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label">Hubungan :</label>
+                                                <div class="col-md-4">
+                                                    <select name="hubungan_pj" class="form-control required select-sm" >
+                                                        <option value=""></option>
+                                                        <option value="orang tua">Orang Tua</option>
+                                                        <option value="anak" >Anak</option>
+                                                        <option value="suami">Suami</option>
+                                                        <option value="istri">Istri</option>
+                                                        <option value="kerabat">Kerabat</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                             <div class="form-group">
+                                                <label class="col-md-3 control-label">Alamat PJ :</label>
+                                                <div class="col-md-9">
+                                                    <textarea rows="3" cols="1" name="alamat_pj" class="auto form-control required input-sm"></textarea>
+                                                </div>
+                                            </div>                                            
+                                             <div class="form-group">
+                                                <div class="col-md-offset-3 col-md-5">
+                                                     <label class="checkbox"><input type="checkbox" name="checkbox_alamat_pj">Sama Dengan Pasien</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="col-md-12 control-label">No. Kontak PJ :</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <input type="text" name="no_tlp_pj" placeholder="Nomor Telepon" class="form-control required digits input-sm" maxlength="8">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1" style="padding-top:7px">
+                                                /
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <input type="text" name="no_ponsel_pj" placeholder="Nomor Ponsel" class="form-control required digits input-sm" maxlength="13">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-offset-3 col-md-5">
+                                                     <label class="checkbox"><input type="checkbox" name="checkbox_no_kontak_pj">Sama Dengan Pasien</label>
+                                                </div>
+                                            </div>                                   
+                                    </div>
+                                    <div class="col-md-12 ck">
+                                    	<h5><strong>Catatan Khusus</strong></h5>
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <textarea rows="2" cols="1" name="catatan_khusus" class="form-control input-sm"></textarea>
+                                                </div>
+                                            </div>                                               
+                                    </div>
+                                </div>
+                                <div class="form-actions" style="padding:10px;">
+                                    <div class="row">
+                                        <div class="col-md-offset-7 col-md-5">
+                                            <input type="submit" value="Simpan &#9745;" class="btn btn-success btn-xs pull-right">
+                                        	<input type="reset" value="Batal &#9746;" class="btn btn-danger btn-xs">
+                                        </div>                                    
+                                    </div>
+                                </div>
+                            </form>
+							</div>
+						</div>
+                    </div>
+                    
+                    <div class="col-md-4 content2" style="padding:5px 5px 5px 0;position:fixed;">
+                    	<div class="row" style="margin-bottom:2px;">
+                        	<div class="col-md-12">
+                            	<div class="widget box" style="margin-bottom:0px;">
+                            <div class="widget-header align-center">
+                                <h4><i class="fa fa-line-chart"></i> TODAY'S VISIT</h4>
+                            </div>
+                            <div class="widget-content">
+                            	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque, in, reprehenderit, enim et libero voluptas debitis excepturi doloribus molestias modi sint autem praesentium natus cum rerum est soluta asperiores minima eligendi atque error inventore sed. Voluptatum, explicabo, eaque quibusdam odit est iure magnam vero distinctio molestias necessitatibus earum facilis enim laboriosam rerum ut eum consequatur officiis excepturi veritatis nam voluptatibus sapiente ipsam dolorum beatae porro. Dolor, cumque, voluptate, rerum ipsam nisi molestias vel eaque consequatur labore sunt libero odio laborum ab dolorum voluptates magnam iure ipsa facilis enim tempora! At, ipsa fugiat soluta pariatur odit porro natus facilis perferendis numquam iusto! Commodi, reprehenderit, deserunt, pariatur atque laudantium sint fugiat consequatur eius assumenda ratione minima vero expedita harum unde ut possimus molestiae repellat suscipit consectetur officiis aperiam quae iusto ducimus facere eum doloribus asperiores ea
+                            </div>
+                        </div>
+                            </div>
+                        </div>
+                    	<div class="row">
+                        	<div class="col-md-6" style="padding-right:1px;">
+                            	<div class="widget box" style="margin-bottom:0px;">
+                                    <div class="widget-header">
+                                        <h4>Klinik Padjadjaran Hari ini <i class="fa fa-edit"></i></h4>
+                                    </div>
+                                    <div class="widget-content">
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque, in, reprehenderit, enim et libero voluptas debitis excepturi doloribus molestias modi sint autem praesentium natus cum rerum est soluta asperiores minima eligendi atque error inventore sed. Voluptatum, explicabo, eaque quibusdam odit est iure magnam vero distinctio molestias necessitatibus earum facilis enim laboriosam rerum ut eum consequatur officiis excepturi veritatis nam voluptatibus sapiente ipsam dolorum beatae porro. Dolor, cumque, voluptate, rerum ipsam nisi molestias vel eaque consequatur labore sunt libero odio laborum ab dolorum voluptates magnam iure ipsa facilis enim tempora! At, ipsa fugiat soluta pariatur odit porro natus facilis perferendis numquam iusto! Commodi, reprehenderit, deserunt, pariatur atque laudantium sint fugiat consequatur eius assumenda ratione minima vero expedita harum unde ut possimus molestiae repellat suscipit consectetur officiis aperiam quae iusto ducimus facere eum doloribus asperiores ea animi numquam am
+                                    </div>
+                                </div>
+                            </div>
+                        	<div class="col-md-6" style="padding-left:1px;">
+                            	<div class="widget box" style="margin-bottom:0px;">
+                                    <div class="widget-header align-center">
+                                        <h4><i class="fa fa-line-chart"></i> TODAY'S VISIT</h4>
+                                    </div>
+                                    <div class="widget-content">
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque, in, reprehenderit, enim et libero voluptas debitis excepturi doloribus molestias modi sint autem praesentium natus cum rerum est soluta asperiores minima eligendi atque error inventore sed. Voluptatum, explicabo, eaque quibusdam odit est iure magnam vero distinctio molestias necessitatibus earum facilis enim laboriosam rerum ut eum consequatur officiis excepturi veritatis nam voluptatibus sapiente ipsam dolorum beatae porro. Dolor, cumque, voluptate, rerum ipsam nisi molestias vel eaque consequatur labore sunt libero odio laborum ab dolorum voluptates magnam iure ipsa facilis enim tempora! At, ipsa fugiat soluta pariatur odit porro natus facilis perferendis numquam iusto! Commodi, reprehenderit, deserunt, pariatur atque laudantium sint fugiat consequatur eius assumenda ratione minima vero expedita harum unde ut possimus molestiae repellat suscipit consectetur officiis aperiam quae iusto ducimus facere eum doloribus asperiores ea animi numquam amet vel debitis tempore quia minus quidem explicabo perspiciatis consequuntur blanditiis similique tempora cupiditate impedit magni quo dolore nam odit? Dicta, tenetur, aliquam ea necessitatibus a autem dignissimos dolorum saepe officiis cupiditate maiores distinctio temporibus beatae eius fugiat. Amet, adipisci, cupiditate quas quo incidunt autem dolor
+                                    </div>
+                        </div>
+                            </div>
+                        </div>
+                         
+                    </div>
+                    
+                </div>
+            </div>        
+        </div><!--content-->
+                   
+    </div><!--container-->
+</body>
+</html>

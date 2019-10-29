@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<title>Form Validation | Melon - Flat &amp; Responsive Admin Template</title>
+
+	<!--=== CSS ===-->
+
+	<!-- Bootstrap -->
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+	<!-- jQuery UI -->
+	<!--<link href="plugins/jquery-ui/jquery-ui-1.10.2.custom.css" rel="stylesheet" type="text/css" />-->
+	<!--[if lt IE 9]>
+		<link rel="stylesheet" type="text/css" href="plugins/jquery-ui/jquery.ui.1.10.2.ie.css"/>
+	<![endif]-->
+
+	<!-- Theme -->
+	<link href="assets/css/main.css" rel="stylesheet" type="text/css" />
+	<link href="assets/css/plugins.css" rel="stylesheet" type="text/css" />
+	<link href="assets/css/responsive.css" rel="stylesheet" type="text/css" />
+	<link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
+
+	<link rel="stylesheet" href="assets/css/fontawesome/font-awesome.min.css">
+    <style type="text/css">
+	.form-group{
+		margin-bottom:2px;
+		}
+    </style>
+
+	<!--[if IE 7]>
+		<link rel="stylesheet" href="assets/css/fontawesome/font-awesome-ie7.min.css">
+	<![endif]-->
+
+	<!--[if IE 8]>
+		<link href="assets/css/ie8.css" rel="stylesheet" type="text/css" />
+	<![endif]
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+	-->
+	<!--=== JavaScript ===-->
+
+	<script type="text/javascript" src="assets/js/libs/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
+
+	<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="assets/js/libs/lodash.compat.min.js"></script>
+
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+		<script src="assets/js/libs/html5shiv.js"></script>
+	<![endif]-->
+
+	<!-- Smartphone Touch Events -->
+	<script type="text/javascript" src="plugins/touchpunch/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="plugins/event.swipe/jquery.event.move.js"></script>
+	<script type="text/javascript" src="plugins/event.swipe/jquery.event.swipe.js"></script>
+
+	<!-- General -->
+	<script type="text/javascript" src="assets/js/libs/breakpoints.js"></script>
+	<script type="text/javascript" src="plugins/respond/respond.min.js"></script>
+	<script type="text/javascript" src="plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script type="text/javascript" src="plugins/slimscroll/jquery.slimscroll.horizontal.min.js"></script>
+
+	<!-- Page specific plugins -->
+	<!--Date Range Picker-->
+	<script type="text/javascript" src="plugins/daterangepicker/moment.min.js"></script>
+	<script type="text/javascript" src="plugins/daterangepicker/daterangepicker.js"></script>
+
+	<!-- Forms -->
+    <script type="text/javascript" src="plugins/tagsinput/jquery.tagsinput.min.js"></script>
+    <script type="text/javascript" src="plugins/autosize/jquery.autosize.min.js"></script>
+    
+	<!-- Form Validation -->
+	<script type="text/javascript" src="plugins/validation/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="plugins/validation/additional-methods.min.js"></script>
+
+	<!-- Noty -->
+	<script type="text/javascript" src="plugins/noty/jquery.noty.js"></script>
+	<script type="text/javascript" src="plugins/noty/layouts/top.js"></script>
+	<script type="text/javascript" src="plugins/noty/themes/default.js"></script>
+
+	<!-- App -->
+	<script type="text/javascript" src="assets/js/app.js"></script>
+	<script type="text/javascript" src="assets/js/plugins.js"></script>
+	<script type="text/javascript" src="assets/js/plugins.form-components.js"></script>
+    
+    <!-- Bootbox -->
+	<script type="text/javascript" src="plugins/bootbox/bootbox.js"></script>
+
+	<script>
+	$(document).ready(function(){
+		"use strict";
+
+		App.init(); // Init layout and core plugins
+		Plugins.init(); // Init all plugins
+		FormComponents.init(); // Init all form-specific plugins
+		
+		//body loading halaman
+		$(window).load(function(){
+		   $('#loading-overlay').fadeOut('fast');
+		   $('#loading').fadeOut('fast');
+		});
+		//body loading halaman
+		
+		<!--header waktu-->
+		$('.waktu').flipcountdown({
+			size:"xs"
+		});
+		<!--header waktu-->
+		
+		<!--header tanggal -->
+		var months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+		var myDays = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jum&#39;at', 'Sabtu'];
+		var date = new Date();
+		var day = date.getDate();
+		var month = date.getMonth();
+		var thisDay = date.getDay(),
+			thisDay = myDays[thisDay];
+		var yy = date.getYear();
+		var year = (yy < 1000) ? yy + 1900 : yy;
+		$('.tanggal').html(thisDay + ', ' + day + ' ' + months[month] + ' ' + year);
+		$('.tgl_antrian_pasien').val(day +'-'+ (month+1) +'-'+ year);
+		<!--header tanggal-->
+		
+		//menu current
+		$('#nav li').click(function() {
+		   $('#nav li').removeClass('current');
+		   $(this).addClass('current')
+		});
+		//menu current
+		
+		//content form clear
+		function clearform($form) {
+		  $form.find('input:text, input:password, input:file, select, textarea').val('');
+		  $form.find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
+		  $form.add('.form-group').find('label[generated="true"]').html('');
+		  $form.add('.form-group').removeClass('has-error has-success');
+		}
+		clearform($('.form-horizontal'));
+		//clear form clear
+				
+		//content form tgl lahir
+		$("input[name='tanggal_lahir']").datepicker({	
+			yearRange: '-100:+0',
+			changeYear: true,
+			changeMonth: true,
+			showOtherMonths:true,
+			autoSize: true,
+			dateFormat: 'dd-mm-yy',
+			maxDate: 0,
+			onSelect: function(value, ui) {
+				var now = new Date();
+				var yearNow = now.getFullYear();
+				var monthNow = now.getMonth()+1;
+				var dateNow = now.getDate();
+				console.log(yearNow+' '+monthNow+' '+dateNow);
+				
+				var yearDob = ui.selectedYear;
+				var monthDob = ui.selectedMonth+1;
+				var dateDob = ui.selectedDay;
+				console.log(yearDob+' '+monthDob+' '+dateDob);
+				
+				var yearAge = yearNow - yearDob;
+
+				if (monthNow >= monthDob)
+					var monthAge = monthNow - monthDob;
+				else {
+					yearAge--;
+					var monthAge = 12 + monthNow -monthDob;
+				}
+				
+				if (dateNow >= dateDob)
+					var dateAge = dateNow - dateDob;
+				else {
+					monthAge--;
+					var dateAge = 31 + dateNow - dateDob;
+						if (monthAge < 0) {
+							monthAge = 11;
+							yearAge--;
+						}
+				}
+				console.log(yearAge+' '+monthAge+' '+dateAge);
+				
+				$("input[name='umur_tahun']").val(yearAge).valid();
+				$("input[name='umur_bulan']").val(monthAge).valid();
+				$("input[name='tanggal_lahir']").valid();
+				
+				if((yearAge < 17) || (yearAge > 75))
+					{
+						$('.pj').show('slow');
+						$('.ck').removeClass('col-md-12').addClass('col-md-5');
+						$("[name='catatan_khusus']").attr('rows','10');
+					} 
+				else 
+					{
+						$('.pj').hide('slow');
+						$('.ck').removeClass('col-md-5').addClass('col-md-12');
+						$("[name='catatan_khusus']").attr('rows','2');
+						clearform($('.pj'));
+					}
+				$("[name='jenis_kelamin']").focus();				
+				
+			}
+		});
+		//content form tgl lahir
+		
+		$('.content2').slimScroll({
+			height:'80vh',
+			alwaysVisible: false
+		});
+		
+		$('input:checkbox').click(function(){
+			if ($(this).is(":checked")){
+				console.log($(this).val());
+			}
+		})
+	});
+	</script>
+
+	<!-- Demo JS -->
+	<script type="text/javascript" src="assets/js/demo/form_validation.js"></script>
+    
+    <!--waktu-->
+    <script type="text/javascript" src="plugins/flipcountdown/jquery.flipcountdown.js"></script>
+    <link rel="stylesheet" type="text/css" href="plugins/flipcountdown/jquery.flipcountdown.css" />
+</head>
+
+<body>
+	<div id="loading-overlay"></div>
+    <div id="loading">
+    	<span>LOADING</span>
+    </div>
+	<!-- Header -->
+	<header class="header navbar navbar-fixed-top" role="banner">
+		<!-- Top Navigation Bar -->
+		<div class="container">
+
+			<!-- Only visible on smartphones, menu toggle -->
+			<ul class="nav navbar-nav">
+				<li class="nav-toggle"><a href="javascript:void(0);" title=""><i class="fa fa-reorder"></i></a></li>
+			</ul>
+
+			<!-- Logo -->
+			<a class="navbar-brand" href="#">
+				<img src="assets/img/logo-kp-70px.png" alt="logo" />
+			</a>
+			<!-- /logo -->
+            
+            <a href="#" class="toggle-sidebar2">
+            	<span style="font-size:20px;"><strong>Klinik Padjadjaran Jatinangor</strong></span>
+            	<span style="font-size:12px;">Jl. Kolonel Achmad Syam RT.04/02 Ds. Sayang Kec. Jatinangor Kab. Sumedang</span>
+            	<span style="font-size:12px;">Tlp. +62-22-7781900</span>
+			</a>         
+
+			<!-- /Sidebar Toggler -->
+            <a href="#" class="toggle-sidebar4">
+            <span class="waktu"></span>
+            <span class="tanggal" style="font-size:11px;"></span>
+			</a>     
+
+			<!-- Top Right Menu -->
+			<ul class="nav navbar-nav navbar-right">
+                <a href="#" class="toggle-sidebar3">
+                    <span style="font-size:16px;"><strong>dr. Reagan Vincent Pantouw</strong></span>
+                    <span style="font-size:13px;"><strong>PENDAFTARAN</strong></span>
+                    <span style="font-size:13px;"><strong>PAGI</strong></span>
+                </a>
+				<!-- User Login Dropdown -->
+				<li class="dropdown user">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<img alt="" class="img-circle" src="assets/img/foto/a.jpeg" width="48px" />
+                        <span class="badge">7</span>
+						<!--<i class="fa fa-caret-down" aria-hidden="true"></i>-->
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="pages_user_profile.html"><i class="fa fa-weixin" aria-hidden="true"></i> Chat</a></li>
+						<li><a href="pages_user_profile.html"><i class="fa fa-info-circle" aria-hidden="true"></i> My Profile</a></li>
+						<li class="divider"></li>
+						<li><a href="<?php echo base_url() ?>/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign Out</a></li>
+					</ul>
+				</li>
+				<!-- /user login dropdown -->
+			</ul>
+			<!-- /Top Right Menu -->
+		</div>
+		<!-- /top navigation bar -->
+	</header> <!-- /.header -->
+
+	<div id="container">
+		<div id="sidebar" class="sidebar-fixed"><!-- /Sidebar -->
+			<div id="sidebar-content">				              
+				<ul id="nav"><!--=== Navigation ===-->  
+                	<li>
+						<a href="javascript:void(0);">
+							<i style="padding:3px 0 3px 0;"></i>
+						</a>
+					</li>
+					<li>
+						<a href="javascript:void(0);" class="bs-tooltip" data-placement="right" data-original-title="Home">
+							<i class="fa fa-home fa-2x" style="padding:3px 0 3px 0;"></i>
+						</a>
+					</li>
+                    <li>
+						<a href="javascript:void(0);" class="bs-tooltip" data-placement="right" data-original-title="Cari Pasien">
+							<i class="fa fa-search fa-2x" style="padding:3px 0 3px 0;"></i>
+						</a>
+					</li>
+                     <li  class="current">
+						<a href="javascript:void(0);" class="bs-tooltip" data-placement="right" data-original-title="Input Data Pasien">
+							<i class="fa fa-user-plus fa-2x" style="padding:3px 0 3px 0;"></i>
+						</a>
+					</li>
+                     <li>
+						<a href="javascript:void(0);" class="bs-tooltip" data-placement="right" data-original-title="Pendaftaran Poliklinik">                        
+							<i class="fa fa-list-alt fa-2x" style="padding:3px 0 3px 0;"></i>                             
+						</a>
+					</li>
+                    <li>
+						<a href="javascript:void(0);" class="bs-tooltip" data-placement="right" data-original-title="Pendaftaran Laboratorium">
+							<i class="fa fa-flask fa-2x" style="padding:3px 0 3px 0;"></i>
+						</a>
+					</li>
+                    <li>
+						<a href="javascript:void(0);" class="bs-tooltip" data-placement="right" data-original-title="Pendaftaran Radiologi">
+							<i class="fa fa-universal-access fa-2x" style="padding:3px 0 3px 0;"></i>
+						</a>
+					</li>    
+                    <li>
+						<a href="javascript:void(0);">
+							<i style="padding:3px 0 3px 0;"></i>
+						</a>
+					</li>     
+                    <li>
+						<a href="javascript:void(0);" class="bs-tooltip" data-placement="right" data-original-title="Cek Obat">
+							<i class="fa fa-medkit fa-2x" style="padding:3px 0 3px 0;"></i>
+						</a>
+					</li>     
+                    <li>
+						<a href="javascript:void(0);" class="bs-tooltip" data-placement="right" data-original-title="Cek Tarif">
+							<i class="fa fa-money fa-2x" style="padding:3px 0 3px 0;"></i>
+						</a>
+					</li>                   
+				</ul><!-- /Navigation -->				
+			</div>
+		</div><!-- /Sidebar -->
+		
+        
+        <div id="content"><!--content-->
+            <div class="container">
+            	<div class="row">
+                	<div class="col-md-7 col-sm-7 col-xs-7 col-lg-7" style="padding:5px;">
+                    	<div class="widget box" style="margin-bottom:0px;">
+							<div class="widget-header">
+                                <h4><i class="fa fa-flask"></i> PENDAFTARAN LABORATORIUM</h4>                             
+                            </div>
+                            <form method="post" id="validate-1" class="form-horizontal">
+							<div class="widget-content" style="padding: 5px 0 5px 0">                            
+                            	<div class="row">
+                                	<div class="col-md-7" style="padding-right:1px;">
+                                        <div class="widget box" style="margin-bottom:2px;">
+                                            <div class="widget-content">
+                                            	<h5><strong>Identitas Pasien</strong></h5>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Nomor Rekam Medis :</label>
+                                                    <div class="col-md-7">
+                                                        <input type="text" name="medrec" class="form-control required input-sm" readonly style="background-color:white;">
+                                                    </div>
+                                                </div>
+                                                 <div class="form-group">
+                                                    <label class="col-md-4 control-label">Nama Pasien :</label>
+                                                    <div class="col-md-8">
+                                                        <input type="text" name="nama" class="form-control required input-sm" readonly style="background-color:white;">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="col-md-12 control-label">Umur :</label>
+                                                        </div>	
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <div class="col-md-6" style="padding-right:1px;">
+                                                                <input type="text" name="umur_tahun" placeholder="0" class="form-control required input-sm align-center" style="background-color:white;" readonly>
+                                                            </div>
+                                                            <div class="col-md-6" style="padding-left:1px;padding-top:4px;">
+                                                                Tahun
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <div class="col-md-6" style="padding-right:1px;">
+                                                                <input type="text" name="umur_bulan" placeholder="0" class="form-control required align-center input-sm" style="background-color:white;" readonly>
+                                                            </div>
+                                                            <div class="col-md-6" style="padding-left:1px;padding-top:4px;">
+                                                                Bulan
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Jenis Asuransi :</label>
+                                                    <div class="col-md-5">
+                                                        <select name="asuransi" class="form-control select-sm required">
+                                                        	<option value=""></option>
+                                                        	<option value="Pribadi">Pribadi</option>
+                                                            <option value="BPJS">BPJS</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5" style="padding-left:1px;">
+                                        <div class="widget box" style="margin-bottom:0px;">
+                                            <div class="widget-content">
+                                            	<h5><strong>Data Pengirim</strong></h5>
+                                                <div class="form-group">
+                                                    <label class="col-md-5 control-label">Dokter Pengirim :</label>
+                                                    <div class="col-md-7">
+                                                        <input type="text" name="nama_dokter" class="form-control input-sm" readonly style="background-color:white;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-5 control-label">Asal Layanan :</label>
+                                                    <div class="col-md-7">
+                                                        <input type="text" name="asal_layan" class="form-control input-sm" readonly style="background-color:white;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-5 control-label">Tanggal Periksa :</label>
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="tanggal_periksa" class="form-control input-sm align-center" readonly style="background-color:white;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-5 control-label">Diagnosis Klinis :</label>
+                                                    <div class="col-md-7">
+                                                        <input type="text" name="diagnosis" class="form-control input-sm">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3" style="padding-right:1px;">
+                                    	<div class="widget box" style="margin-bottom:0px;">
+                                            <div class="widget-content">
+                                            	<span class="align-center"><h5><strong>HEMATOLOGI</strong></h5></span>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                         <label class="checkbox"><input type="checkbox" value="Hema Rutin">Hema Rutin (Hb, Ht, L, T)</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                         <label class="checkbox"><input type="checkbox" name="Hema Lengkap">Hema Lengkap <span style="font-size:8.8px;">(HR, Diff, Ery, MC)</span></label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                         <label class="checkbox"><input type="checkbox" name="Hemoglobin">Hemoglobin (Hb)</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                         <label class="checkbox"><input type="checkbox" name="Hematokrit">Hematokrit (Ht)</label>
+                                                    </div>
+                                                </div>
+                                                 <div class="form-group">
+                                                    <div class="col-md-12">
+                                                         <label class="checkbox"><input type="checkbox" name="Leukosit">Leukosit (L)</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                         <label class="checkbox"><input type="checkbox" name="Leukosit">Trombosit (T)</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                         <label class="checkbox"><input type="checkbox" name="Eritrosit">Eritrosit (Ery)</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                         <label class="checkbox"><input type="checkbox" name="MC">MCV, MCH, MCHC (MC)</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                         <label class="checkbox"><input type="checkbox" name="Hitung Jenis">Hitung Jenis (Diff)</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                         <label class="checkbox"><input type="checkbox" name="Laju Endap Darah">Laju Endap Darah (LED)*</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                         <label class="checkbox"><input type="checkbox" name="Masa Pendarahan">Masa Pendarahan (BT)</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                         <label class="checkbox"><input type="checkbox" name="Masa Pembekuan">Masa Pembekuan (CT)</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                         <label class="checkbox"><input type="checkbox" name="Morfologi Darah Tepi"><span style="font-size:12px;">Morfologi Darah Tepi (SADT)</span></label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                         <label class="checkbox"><input type="checkbox" name="Morfologi Darah Tepi"><span style="font-size:13px;">Gol. Darah ABO + Rhesus</span></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>    
+                                    </div>
+                                    <div class="col-md-6" style="padding-right:1px;padding-left:1px;">
+                                    	<div class="widget box" style="margin-bottom:0px;">
+                                            <div class="widget-content">
+                                            	<span class="align-center"><h5><strong>KIMIA KLINIK</strong></h5></span>
+                                            </div>
+                                        </div>   
+                                    </div>
+                                    <div class="col-md-3" style="padding-left:1px;">
+                                    	<div class="widget box" style="margin-bottom:0px;">
+                                            <div class="widget-content">
+                                            	<span class="align-center"><h6><strong>IMUNOLOGI / MIKROBIOLOGI</strong></h6></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                
+							</div>
+                            </form>
+						</div>
+                    </div>
+                    
+                    <div class="col-md-5 content2" style="padding:5px 5px 5px 0;position:fixed;">
+                    	<div class="row" style="margin-bottom:2px;">
+                        	<div class="col-md-12">
+                            	<div class="widget box" style="margin-bottom:0px;">
+                            <div class="widget-header align-center">
+                                <h4><i class="fa fa-line-chart"></i> TODAY'S VISIT</h4>
+                            </div>
+                            <div class="widget-content">
+                            	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque, in, reprehenderit, enim et libero voluptas debitis excepturi doloribus molestias modi sint autem praesentium natus cum rerum est soluta asperiores minima eligendi atque error inventore sed. Voluptatum, explicabo, eaque quibusdam odit est iure magnam vero distinctio molestias necessitatibus earum facilis enim laboriosam rerum ut eum consequatur officiis excepturi veritatis nam voluptatibus sapiente ipsam dolorum beatae porro. Dolor, cumque, voluptate, rerum ipsam nisi molestias vel eaque consequatur labore sunt libero odio laborum ab dolorum voluptates magnam iure ipsa facilis enim tempora! At, ipsa fugiat soluta pariatur odit porro natus facilis perferendis numquam iusto! Commodi, reprehenderit, deserunt, pariatur atque laudantium sint fugiat consequatur eius assumenda ratione minima vero expedita harum unde ut possimus molestiae repellat suscipit consectetur officiis aperiam quae iusto ducimus facere eum doloribus asperiores ea
+                            </div>
+                        </div>
+                            </div>
+                        </div>
+                    	<div class="row">
+                        	<div class="col-md-6" style="padding-right:1px;">
+                            	<div class="widget box" style="margin-bottom:0px;">
+                                    <div class="widget-header">
+                                        <h4>Klinik Padjadjaran Hari ini <i class="fa fa-edit"></i></h4>
+                                    </div>
+                                    <div class="widget-content">
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque, in, reprehenderit, enim et libero voluptas debitis excepturi doloribus molestias modi sint autem praesentium natus cum rerum est soluta asperiores minima eligendi atque error inventore sed. Voluptatum, explicabo, eaque quibusdam odit est iure magnam vero distinctio molestias necessitatibus earum facilis enim laboriosam rerum ut eum consequatur officiis excepturi veritatis nam voluptatibus sapiente ipsam dolorum beatae porro. Dolor, cumque, voluptate, rerum ipsam nisi molestias vel eaque consequatur labore sunt libero odio laborum ab dolorum voluptates magnam iure ipsa facilis enim tempora! At, ipsa fugiat soluta pariatur odit porro natus facilis perferendis numquam iusto! Commodi, reprehenderit, deserunt, pariatur atque laudantium sint fugiat consequatur eius assumenda ratione minima vero expedita harum unde ut possimus molestiae repellat suscipit consectetur officiis aperiam quae iusto ducimus facere eum doloribus asperiores ea animi numquam am
+                                    </div>
+                                </div>
+                            </div>
+                        	<div class="col-md-6" style="padding-left:1px;">
+                            	<div class="widget box" style="margin-bottom:0px;">
+                                    <div class="widget-header align-center">
+                                        <h4><i class="fa fa-line-chart"></i> TODAY'S VISIT</h4>
+                                    </div>
+                                    <div class="widget-content">
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque, in, reprehenderit, enim et libero voluptas debitis excepturi doloribus molestias modi sint autem praesentium natus cum rerum est soluta asperiores minima eligendi atque error inventore sed. Voluptatum, explicabo, eaque quibusdam odit est iure magnam vero distinctio molestias necessitatibus earum facilis enim laboriosam rerum ut eum consequatur officiis excepturi veritatis nam voluptatibus sapiente ipsam dolorum beatae porro. Dolor, cumque, voluptate, rerum ipsam nisi molestias vel eaque consequatur labore sunt libero odio laborum ab dolorum voluptates magnam iure ipsa facilis enim tempora! At, ipsa fugiat soluta pariatur odit porro natus facilis perferendis numquam iusto! Commodi, reprehenderit, deserunt, pariatur atque laudantium sint fugiat consequatur eius assumenda ratione minima vero expedita harum unde ut possimus molestiae repellat suscipit consectetur officiis aperiam quae iusto ducimus facere eum doloribus asperiores ea animi numquam amet vel debitis tempore quia minus quidem explicabo perspiciatis consequuntur blanditiis similique tempora cupiditate impedit magni quo dolore nam odit? Dicta, tenetur, aliquam ea necessitatibus a autem dignissimos dolorum saepe officiis cupiditate maiores distinctio temporibus beatae eius fugiat. Amet, adipisci, cupiditate quas quo incidunt autem dolor
+                                    </div>
+                        </div>
+                            </div>
+                        </div>
+                         
+                    </div>
+                    
+                </div>
+            </div>        
+        </div><!--content-->
+                   
+    </div><!--container-->
+</body>
+</html>
